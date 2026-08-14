@@ -15,8 +15,9 @@
     <script>
         // ⚠️ ВНИМАНИЕ: Обязательно замените адрес ниже на ВАШУ РЕАЛЬНУЮ ссылку от Render!
         // Протокол должен быть строго wss:// (например, wss://://onrender.com)
-        const HOST = window.location.origin.replace(/^http/, 'ws');
-        const ws = new WebSocket(HOST); 
+        // const HOST = window.location.origin.replace(/^http/, 'ws');
+        // const ws = new WebSocket(HOST); 
+        const ws = new WebSocket('wss://://work-together.onrender.com/'); // Укажите вашу реальную ссылку вместо xxxx
 
         const remoteCursors = {};
 
