@@ -13,173 +13,173 @@
     </div>
 
     <script>
-        const HOST = window.location.origin.replace(/^http/, 'ws');
-        const ws = new WebSocket(HOST); 
+        // const HOST = window.location.origin.replace(/^http/, 'ws');
+        // const ws = new WebSocket(HOST); 
 
-        const remoteCursors = {};
+        // const remoteCursors = {};
 
-        // 1. ОТПРАВКА: Переводим пиксели в относительные проценты (от 0 до 1)
-        window.addEventListener('mousemove', (event) => {
-            if (ws.readyState === WebSocket.OPEN) {
-                // clientX делим на общую ширину окна, clientY — на общую высоту
-                const relativeX = event.clientX / window.innerWidth;
-                const relativeY = event.clientY / window.innerHeight;
+        // // 1. ОТПРАВКА: Переводим пиксели в относительные проценты (от 0 до 1)
+        // window.addEventListener('mousemove', (event) => {
+        //     if (ws.readyState === WebSocket.OPEN) {
+        //         // clientX делим на общую ширину окна, clientY — на общую высоту
+        //         const relativeX = event.clientX / window.innerWidth;
+        //         const relativeY = event.clientY / window.innerHeight;
 
-                ws.send(JSON.stringify({ 
-                    type: 'move', 
-                    x: relativeX, 
-                    y: relativeY 
-                }));
-            }
-        });
+        //         ws.send(JSON.stringify({ 
+        //             type: 'move', 
+        //             x: relativeX, 
+        //             y: relativeY 
+        //         }));
+        //     }
+        // });
 
-        // Отслеживаем тачи для мобильных устройств (тоже в процентах)
-        window.addEventListener('touchmove', (event) => {
-            if (ws.readyState === WebSocket.OPEN && event.touches.length > 0) {
-                const touch = event.touches[0];
-                const relativeX = touch.clientX / window.innerWidth;
-                const relativeY = touch.clientY / window.innerHeight;
+        // // Отслеживаем тачи для мобильных устройств (тоже в процентах)
+        // window.addEventListener('touchmove', (event) => {
+        //     if (ws.readyState === WebSocket.OPEN && event.touches.length > 0) {
+        //         const touch = event.touches[0];
+        //         const relativeX = touch.clientX / window.innerWidth;
+        //         const relativeY = touch.clientY / window.innerHeight;
 
-                ws.send(JSON.stringify({ 
-                    type: 'move', 
-                    x: relativeX, 
-                    y: relativeY 
-                }));
-            }
-        });
+        //         ws.send(JSON.stringify({ 
+        //             type: 'move', 
+        //             x: relativeX, 
+        //             y: relativeY 
+        //         }));
+        //     }
+        // });
 
-        // Отправка кликов (тоже привязываем к процентам)
-        window.addEventListener('click', (event) => {
-            if (event.target === document.getElementById('chatInput')) return; 
-            if (ws.readyState === WebSocket.OPEN) {
-                const relativeX = event.clientX / window.innerWidth;
-                const relativeY = event.clientY / window.innerHeight;
+        // // Отправка кликов (тоже привязываем к процентам)
+        // window.addEventListener('click', (event) => {
+        //     if (event.target === document.getElementById('chatInput')) return; 
+        //     if (ws.readyState === WebSocket.OPEN) {
+        //         const relativeX = event.clientX / window.innerWidth;
+        //         const relativeY = event.clientY / window.innerHeight;
 
-                ws.send(JSON.stringify({ 
-                    type: 'click', 
-                    x: relativeX, 
-                    y: relativeY 
-                }));
-            }
-        });
+        //         ws.send(JSON.stringify({ 
+        //             type: 'click', 
+        //             x: relativeX, 
+        //             y: relativeY 
+        //         }));
+        //     }
+        // });
 
-        // Отправка сообщений в чат
-        const input = document.getElementById('chatInput');
-        input.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' && input.value.trim() !== '') {
-                if (ws.readyState === WebSocket.OPEN) {
-                    ws.send(JSON.stringify({ type: 'chat', text: input.value }));
-                    input.value = ''; 
-                }
-            }
-        });
+        // // Отправка сообщений в чат
+        // const input = document.getElementById('chatInput');
+        // input.addEventListener('keydown', (event) => {
+        //     if (event.key === 'Enter' && input.value.trim() !== '') {
+        //         if (ws.readyState === WebSocket.OPEN) {
+        //             ws.send(JSON.stringify({ type: 'chat', text: input.value }));
+        //             input.value = ''; 
+        //         }
+        //     }
+        // });
 
-        // 2. ПРИЁМ ДАННЫХ
-        ws.onmessage = (event) => {
-            const data = JSON.parse(event.data);
+        // // 2. ПРИЁМ ДАННЫХ
+        // ws.onmessage = (event) => {
+        //     const data = JSON.parse(event.data);
             
-            if (data.type === 'disconnect') {
-                if (remoteCursors[data.id]) {
-                    remoteCursors[data.id].container.remove();
-                    delete remoteCursors[data.id];
-                }
-                return;
-            }
+        //     if (data.type === 'disconnect') {
+        //         if (remoteCursors[data.id]) {
+        //             remoteCursors[data.id].container.remove();
+        //             delete remoteCursors[data.id];
+        //         }
+        //         return;
+        //     }
 
-            // ПРИ КЛИКЕ: Умножаем полученные проценты на текущую ширину/высоту НАШЕГО экрана
-            if (data.type === 'click') {
-                const pixelX = data.x * window.innerWidth;
-                const pixelY = data.y * window.innerHeight;
+        //     // ПРИ КЛИКЕ: Умножаем полученные проценты на текущую ширину/высоту НАШЕГО экрана
+        //     if (data.type === 'click') {
+        //         const pixelX = data.x * window.innerWidth;
+        //         const pixelY = data.y * window.innerHeight;
 
-                const clickEffect = document.createElement('div');
-                clickEffect.innerText = '⭕';
-                clickEffect.style.position = 'absolute';
-                clickEffect.style.left = (pixelX - 10) + 'px';
-                clickEffect.style.top = (pixelY - 14) + 'px';
-                clickEffect.style.color = data.color;
-                clickEffect.style.fontSize = '24px';
-                clickEffect.style.pointerEvents = 'none';
-                clickEffect.style.zIndex = '999';
-                document.body.appendChild(clickEffect);
-                setTimeout(() => clickEffect.remove(), 500);
-                return; 
-            }
+        //         const clickEffect = document.createElement('div');
+        //         clickEffect.innerText = '⭕';
+        //         clickEffect.style.position = 'absolute';
+        //         clickEffect.style.left = (pixelX - 10) + 'px';
+        //         clickEffect.style.top = (pixelY - 14) + 'px';
+        //         clickEffect.style.color = data.color;
+        //         clickEffect.style.fontSize = '24px';
+        //         clickEffect.style.pointerEvents = 'none';
+        //         clickEffect.style.zIndex = '999';
+        //         document.body.appendChild(clickEffect);
+        //         setTimeout(() => clickEffect.remove(), 500);
+        //         return; 
+        //     }
 
-            if (data.type === 'chat' && remoteCursors[data.id]) {
-                const chatBubble = remoteCursors[data.id].bubble;
-                chatBubble.innerText = data.text;
-                chatBubble.style.display = 'block'; 
+        //     if (data.type === 'chat' && remoteCursors[data.id]) {
+        //         const chatBubble = remoteCursors[data.id].bubble;
+        //         chatBubble.innerText = data.text;
+        //         chatBubble.style.display = 'block'; 
                 
-                if (remoteCursors[data.id].chatTimeout) clearTimeout(remoteCursors[data.id].chatTimeout);
-                remoteCursors[data.id].chatTimeout = setTimeout(() => {
-                    chatBubble.style.display = 'none';
-                }, 4000);
-                return;
-            }
+        //         if (remoteCursors[data.id].chatTimeout) clearTimeout(remoteCursors[data.id].chatTimeout);
+        //         remoteCursors[data.id].chatTimeout = setTimeout(() => {
+        //             chatBubble.style.display = 'none';
+        //         }, 4000);
+        //         return;
+        //     }
 
-            // ПРИ ДВИЖЕНИИ: Превращаем проценты обратно в пиксели под размеры нашего текущего экрана
-            if (data.type === 'move') {
-                if (!remoteCursors[data.id]) {
-                    const cursorContainer = document.createElement('div');
-                    cursorContainer.style.position = 'absolute';
-                    cursorContainer.style.pointerEvents = 'none';
-                    cursorContainer.style.display = 'flex';
-                    cursorContainer.style.flexDirection = 'column';
-                    cursorContainer.style.alignItems = 'flex-start';
-                    cursorContainer.style.zIndex = '100';
+        //     // ПРИ ДВИЖЕНИИ: Превращаем проценты обратно в пиксели под размеры нашего текущего экрана
+        //     if (data.type === 'move') {
+        //         if (!remoteCursors[data.id]) {
+        //             const cursorContainer = document.createElement('div');
+        //             cursorContainer.style.position = 'absolute';
+        //             cursorContainer.style.pointerEvents = 'none';
+        //             cursorContainer.style.display = 'flex';
+        //             cursorContainer.style.flexDirection = 'column';
+        //             cursorContainer.style.alignItems = 'flex-start';
+        //             cursorContainer.style.zIndex = '100';
 
-                    const bubble = document.createElement('div');
-                    bubble.style.display = 'none'; 
-                    bubble.style.backgroundColor = '#fff';
-                    bubble.style.color = '#000';
-                    bubble.style.border = '2px solid black';
-                    bubble.style.padding = '5px 10px';
-                    bubble.style.borderRadius = '8px';
-                    bubble.style.fontSize = '12px';
-                    bubble.style.fontWeight = 'bold';
-                    bubble.style.marginBottom = '4px';
-                    bubble.style.boxShadow = '2px 2px 0px black';
-                    bubble.style.maxWidth = '150px';
-                    bubble.style.wordBreak = 'break-word';
+        //             const bubble = document.createElement('div');
+        //             bubble.style.display = 'none'; 
+        //             bubble.style.backgroundColor = '#fff';
+        //             bubble.style.color = '#000';
+        //             bubble.style.border = '2px solid black';
+        //             bubble.style.padding = '5px 10px';
+        //             bubble.style.borderRadius = '8px';
+        //             bubble.style.fontSize = '12px';
+        //             bubble.style.fontWeight = 'bold';
+        //             bubble.style.marginBottom = '4px';
+        //             bubble.style.boxShadow = '2px 2px 0px black';
+        //             bubble.style.maxWidth = '150px';
+        //             bubble.style.wordBreak = 'break-word';
 
-                    const svgWrapper = document.createElement('div');
-                    svgWrapper.innerHTML = `
-                        <svg width="32" height="32" viewBox="0 0 100 100" style="display:block;">
-                            <path d="M15,15 L85,40 C92,43 90,53 82,54 L52,60 L40,90 C38,98 28,96 26,89 L12,23 C11,16 17,11 15,15 Z" 
-                                  stroke="black" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" id="svg-path-${data.id}" />
-                        </svg>
-                    `;
+        //             const svgWrapper = document.createElement('div');
+        //             svgWrapper.innerHTML = `
+        //                 <svg width="32" height="32" viewBox="0 0 100 100" style="display:block;">
+        //                     <path d="M15,15 L85,40 C92,43 90,53 82,54 L52,60 L40,90 C38,98 28,96 26,89 L12,23 C11,16 17,11 15,15 Z" 
+        //                           stroke="black" stroke-width="9" stroke-linejoin="round" stroke-linecap="round" id="svg-path-${data.id}" />
+        //                 </svg>
+        //             `;
 
-                    const label = document.createElement('span');
-                    label.innerText = data.name; 
-                    label.style.fontSize = '12px';
-                    label.style.fontWeight = 'bold';
-                    label.style.padding = '3px 8px';
-                    label.style.borderRadius = '5px';
-                    label.style.color = '#fff';
-                    label.style.marginTop = '1px'; 
-                    label.style.border = '2px solid black';
-                    label.style.boxShadow = '2px 2px 0px rgba(0,0,0,1)';
+        //             const label = document.createElement('span');
+        //             label.innerText = data.name; 
+        //             label.style.fontSize = '12px';
+        //             label.style.fontWeight = 'bold';
+        //             label.style.padding = '3px 8px';
+        //             label.style.borderRadius = '5px';
+        //             label.style.color = '#fff';
+        //             label.style.marginTop = '1px'; 
+        //             label.style.border = '2px solid black';
+        //             label.style.boxShadow = '2px 2px 0px rgba(0,0,0,1)';
 
-                    cursorContainer.appendChild(bubble);
-                    cursorContainer.appendChild(svgWrapper);
-                    cursorContainer.appendChild(label);
-                    document.body.appendChild(cursorContainer);
+        //             cursorContainer.appendChild(bubble);
+        //             cursorContainer.appendChild(svgWrapper);
+        //             cursorContainer.appendChild(label);
+        //             document.body.appendChild(cursorContainer);
                     
-                    const pathElement = svgWrapper.querySelector(`#svg-path-${data.id}`);
-                    remoteCursors[data.id] = { container: cursorContainer, label: label, path: pathElement, bubble: bubble };
-                }
+        //             const pathElement = svgWrapper.querySelector(`#svg-path-${data.id}`);
+        //             remoteCursors[data.id] = { container: cursorContainer, label: label, path: pathElement, bubble: bubble };
+        //         }
 
-                // Магия вычисления: проценты умножаем на ширину/высоту окна текущего устройства
-                const pixelX = data.x * window.innerWidth;
-                const pixelY = data.y * window.innerHeight;
+        //         // Магия вычисления: проценты умножаем на ширину/высоту окна текущего устройства
+        //         const pixelX = data.x * window.innerWidth;
+        //         const pixelY = data.y * window.innerHeight;
 
-                remoteCursors[data.id].container.style.left = pixelX + 'px';
-                remoteCursors[data.id].container.style.top = pixelY + 'px';
-                remoteCursors[data.id].label.style.backgroundColor = data.color; 
-                remoteCursors[data.id].path.setAttribute('fill', data.color);
-            }
-        };
+        //         remoteCursors[data.id].container.style.left = pixelX + 'px';
+        //         remoteCursors[data.id].container.style.top = pixelY + 'px';
+        //         remoteCursors[data.id].label.style.backgroundColor = data.color; 
+        //         remoteCursors[data.id].path.setAttribute('fill', data.color);
+        //     }
+        // };
     </script>
 </body>
 </html>
