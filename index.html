@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <style>
+        body {
+            background-color: black;
+        }
+        canvas {
+            background-color: white;
+            box-shadow: 0 0 0 3px black, 0 0 0 6px white;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Live Cursors - Responsive Edition</title>
+    <title>Undertale в браузере</title>
+    <script type="module" src="main.js"></script>
 </head>
-<body style="margin: 0; padding: 20px; font-family: system-ui, -apple-system, sans-serif; height: 100vh; overflow: hidden; background-color: #fafafa;">
+<body>
+
+    <canvas id="canvas" width="640" height="480"></canvas>
 
     <!-- <div style="position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 1000; display: flex; gap: 10px;">
         <input type="text" id="chatInput" placeholder="Напишите что-нибудь и нажмите Enter..." 
