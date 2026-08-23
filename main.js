@@ -1,5 +1,6 @@
 //import "./scripts/settings.js";
 //import settings from "./scripts/settings.js";
+import "./scripts/audio.js";
 import "./scripts/canvas.js";
 import "./scripts/frisk.js";
 
