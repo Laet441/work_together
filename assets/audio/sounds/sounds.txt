@@ -1,0 +1,1 @@
+Do not delete this file! It is used to prevent the folder from being automatically deleted when there are no other files in it.
