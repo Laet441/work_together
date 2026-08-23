@@ -76,17 +76,15 @@ function load() {
   //import settings from "./scripts/settings.js";
   
   context.imageSmoothingEnabled = false;
-  context.font = "20px arial";
-  context.textBaseline = 'top';
   
-  joystick.load(context);
+  if (settings.isMobile) joystick.load(context);
   frisk.load(context);
 }
 
 function update() {
   if (!isInit) return;
   
-  joystick.update(context);
+  if (settings.isMobile) joystick.update(context);
   frisk.update(context);
 }
 
@@ -95,6 +93,13 @@ function draw() {
   
   if (!isInit) {
     if (startScreen.loaded) context.drawImage(startScreen.image, 0, 0);
+    else {
+      context.font = "36px arial";
+      context.textBaseline = "center";
+      context.textAlign = "center";
+      context.fillStyle = "white";
+      context.fillText("Assets are loading. Please wait.", 320, 240);
+    }
     return;
   }
   
@@ -102,9 +107,12 @@ function draw() {
   context.fillRect(0, 0, canvas.width, canvas.height);
   
   frisk.draw(context);
-  joystick.draw(context);
+  if (settings.isMobile) joystick.draw(context);
   
   let startText = "Your device is " + (settings.isMobile ? "MOBILE. Check out the joystick! :p" : "NOT MOBILE. I recommend accessing from a mobile device!");
+  context.font = "20px arial";
+  context.textBaseline = "top";
+  context.textAlign = "left";
   context.fillStyle = "black";
   context.fillText(startText, 10, 10, context.canvas.width - 20);
 }

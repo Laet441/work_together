@@ -5,7 +5,7 @@ const audio = {
     console.log("Audio path: " + path);
     
     const aud = new Audio(path);
-    aud.volume = 0.25;
+    aud.volume = 0.2;
     aud.play();
     
   }

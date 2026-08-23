@@ -1,4 +1,3 @@
-import settings from "./settings.js";
 import frisk from "./frisk.js";
 
 const joystick = {
@@ -42,11 +41,10 @@ const joystick = {
     y: 2
   },
   alpha: 0.3,
+  padding: 10,
   active: false,
   
   load(context) {
-    if (!settings.isMobile) return;
-    
     this.circle.big.image.src = "assets/images/joystick/big_circle.png";
     this.circle.big.image.onload = () => {
       this.circle.big.loaded = true;
@@ -81,15 +79,18 @@ const joystick = {
     context.save();
     context.globalAlpha = this.alpha;
     
+    const padding = this.padding;
     const move = this.circle.move;
     const radius = Math.min(this.circle.big.size.x, this.circle.big.size.y) / 2;
     
     const tcb = this.circle.big;
-    context.drawImage(tcb.image, tcb.position.x, tcb.position.y, tcb.size.x, tcb.size.y);
+    const tcbpx = tcb.position.x + padding;
+    const tcbpy = tcb.position.y - padding;
+    context.drawImage(tcb.image, tcbpx, tcbpy, tcb.size.x, tcb.size.y);
     
     const tcs = this.circle.small;
-    const tcspx = tcs.position.x + this.circle.move.x + move.x * radius;
-    const tcspy = tcs.position.y + this.circle.move.y + move.y * radius;
+    const tcspx = tcs.position.x + padding + this.circle.move.x + move.x * radius;
+    const tcspy = tcs.position.y - padding + this.circle.move.y + move.y * radius;
     context.drawImage(tcs.image, tcspx, tcspy, tcs.size.x, tcs.size.y);
     
     context.restore();
