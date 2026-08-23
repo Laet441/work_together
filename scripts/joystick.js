@@ -1,3 +1,4 @@
+import settings from "./settings.js";
 import frisk from "./frisk.js";
 
 const joystick = {
@@ -44,6 +45,8 @@ const joystick = {
   active: false,
   
   load(context) {
+    if (!settings.isMobile) return;
+    
     this.circle.big.image.src = "assets/images/joystick/big_circle.png";
     this.circle.big.image.onload = () => {
       this.circle.big.loaded = true;
@@ -68,10 +71,9 @@ const joystick = {
     
     if (this.circle.clicked) {
       const moveX = joystick.circle.move.x;
-const moveY = joystick.circle.move.y;
-frisk.move(moveX, moveY);
+      const moveY = joystick.circle.move.y;
+      frisk.move(moveX, moveY);
     }
-    
   },
   draw(context) {
     if (!this.active) return;

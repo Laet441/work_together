@@ -49,6 +49,8 @@ canvas.addEventListener("touchend", (event) => {
 //}
 
 function load() {
+  //import settings from "./scripts/settings.js";
+  
   context.imageSmoothingEnabled = false;
   
   joystick.load(context);
