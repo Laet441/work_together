@@ -41,7 +41,10 @@ const joystick = {
     y: 2
   },
   alpha: 0.3,
-  padding: 10,
+  padding: {
+    x: 30,
+    y: 50
+  },
   active: false,
   
   load(context) {
@@ -84,13 +87,13 @@ const joystick = {
     const radius = Math.min(this.circle.big.size.x, this.circle.big.size.y) / 2;
     
     const tcb = this.circle.big;
-    const tcbpx = tcb.position.x + padding;
-    const tcbpy = tcb.position.y - padding;
+    const tcbpx = tcb.position.x + padding.x;
+    const tcbpy = tcb.position.y - padding.y;
     context.drawImage(tcb.image, tcbpx, tcbpy, tcb.size.x, tcb.size.y);
     
     const tcs = this.circle.small;
-    const tcspx = tcs.position.x + padding + this.circle.move.x + move.x * radius;
-    const tcspy = tcs.position.y - padding + this.circle.move.y + move.y * radius;
+    const tcspx = tcs.position.x + padding.x + this.circle.move.x + move.x * radius;
+    const tcspy = tcs.position.y - padding.y + this.circle.move.y + move.y * radius;
     context.drawImage(tcs.image, tcspx, tcspy, tcs.size.x, tcs.size.y);
     
     context.restore();
