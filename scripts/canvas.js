@@ -8,7 +8,7 @@ const context = canvas.getContext("2d");
 
 let isInit = false;
 
-const start_screen = {
+const startScreen = {
   image: new Image(),
   loaded: false,
   load() {
@@ -19,7 +19,7 @@ const start_screen = {
   }
 }
 
-start_screen.load();
+startScreen.load();
 
 canvas.addEventListener("click", (event) => {
   if (!isInit) {
@@ -94,7 +94,7 @@ function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   
   if (!isInit) {
-    if (start_screen.loaded) context.drawImage(start_screen.image, 0, 0);
+    if (startScreen.loaded) context.drawImage(startScreen.image, 0, 0);
     return;
   }
   
