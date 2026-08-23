@@ -1,0 +1,34 @@
+[English]
+Tip No. 1
+When you are working in the "Spck Editor" program, which can be downloaded on Android in the "Play Market" application, and when you have a local cloned "Github" repository, do not upload audio files through this program, because you will not be able to update the changes later. The program will simply return an error: "Git Push Error. One or more branches were not updated: - refs/heads/main: failed". At least that's my mistake. So I upload the audio files through the official website "Github".
+If you encounter such an error, then I can help you a little bit:
+1) You need to delete all the audio files that you uploaded through this program after the last successful changes.
+2) Go to "Projects", click on the colon next to your project and click on the "Export ZIP" button.
+3) Exit the program and find the downloaded ZIP archive in your device's downloads.
+4) Unzip this ZIP and save all the files to one folder (you can name it the same as your repository).
+5) Go back to the "Spck Editor", where "Projects" is, click on the same colon button and then on the "Delete" button. Confirm the deletion of the local "Github" repository by entering the three digits above in the text that appears.
+6) Now you can reclone the "Github" repository and replace the new saved files from the very folder that you recently created after unzipping the ZIP archive.
+7) Try uploading the changes to the "Github" repository.
+I hope you've managed to fix this issue!
+
+
+
+
+
+
+
+
+
+
+[Россия]
+Совет №1
+Когда работаете в программе "Spck Editor", скачать которую можно на Android в приложении "Play Market", и когда у вас имеется клонированная локальная "Github" репозитория, не загружайте аудио файлы через данную программу, потому что потом обновлять изменения у вас никак не получится. Программа просто будет выдавать ошибку: "Git Push Error. One or more branches were not updated: - refs/heads/main: failed". По крайне мере у меня такая ошибка. Так что аудио файлы я загружаю через официальный сайт "Github".
+Если вы столкнулись с такой ошибкой, то я могу вам немного помочь:
+1) Вам нужно удалить все аудио файлы, которые вы загружали через эту программу после последних успешных изменений.
+2) Перейдите в "Проекты", нажмите на троеточие рядом с вашим проектом и нажмите на кнопку "Экспорт ZIP".
+3) Выйдите из программы и найдите в загрузках вашего устройства скачанный ZIP архив.
+4) Разархивируйте этот ZIP и сохраните все файлы в одну папку (можно её назвать также как и вашу репозиторию).
+5) Вернитесь в "Spck Editor", там где "Проекты", нажмите на ту же кнопку с троеточием и затем на кнопку "Удалить". Подтвердите удаление локальной "Github" репозитории при помощи ввода трёх цифр выше во вспывающем тексте.
+6) Теперь вы можете повторно склонировать "Github" репозиторию и заменить новые сохранённые файлы с той самой папки, которую вы недавно создали после разархивации ZIP архива.
+7) Попробуйте загрузить изменения в "Github" репозиторию.
+Надеюсь у вас получилось исправить данную проблему!
