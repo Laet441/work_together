@@ -23,7 +23,7 @@ const frisk = {
     y: 2
   },
   speed: 3,
-  direction: "bottom",
+  direction: "",
   isMoving: false,
   loaded: false,
   active: false,
@@ -55,7 +55,7 @@ const frisk = {
       }
       
       if (!loaded) return;
-      this.setImage("standBottom");
+      this.setDirection("down");
       this.active = true;
       
       //console.log(this.images.standBottom.loaded);
@@ -65,19 +65,19 @@ const frisk = {
     this.position.x += this.velocity.x * this.speed;
     this.position.y += this.velocity.y * this.speed;
     
-    // Set image
+    // Set direction
     if (this.isMoving) {
       let angle = Math.atan2(this.velocity.y, this.velocity.x) * (180 / Math.PI) + 180;
-      let imageName = "";
+      let direction = "";
       
-      if ((angle >= 0 && angle < 45) || (angle >= 315 && angle < 360)) imageName = "standLeft";
-      else if (angle >= 45 && angle < 135) imageName = "standTop";
-      else if (angle >= 135 && angle < 225) imageName = "standRight";
-      else if (angle >= 225 && angle < 315) imageName = "standBottom";
+      if ((angle >= 0 && angle < 45) || (angle >= 315 && angle < 360)) direction = "left";
+      else if (angle >= 45 && angle < 135) direction = "up";
+      else if (angle >= 135 && angle < 225) direction = "right";
+      else if (angle >= 225 && angle < 315) direction = "down";
       
-      if (this.image != this.images[imageName].image) this.setImage(imageName);
+      if (this.direction != direction) this.setDirection(direction);
       
-      console.log(angle);
+      //console.log(angle);
     }
     
     // Reset moving
@@ -103,6 +103,14 @@ const frisk = {
     this.velocity.x = velocityX;
     this.velocity.y = velocityY;
     this.isMoving = true;
+  },
+  setDirection(direction) {
+    this.direction = direction;
+    
+    if (direction == "left") this.setImage("standLeft");
+    else if (direction == "up") this.setImage("standTop");
+    else if (direction == "right") this.setImage("standRight");
+    else if (direction == "down") this.setImage("standBottom");
   },
   setImage(name) {
     const image = this.images[name];
