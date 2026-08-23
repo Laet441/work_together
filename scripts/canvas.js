@@ -22,7 +22,7 @@ const startScreen = {
 startScreen.load();
 
 canvas.addEventListener("click", (event) => {
-  if (!isInit) {
+  if (!isInit && startScreen.loaded) {
     isInit = true;
     audio.play("quiet_glade.ogg", true);
   }
