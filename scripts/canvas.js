@@ -7,6 +7,9 @@ const canvas = document.getElementById("canvas");
 const context = canvas.getContext("2d");
 
 let isInit = false;
+let startTime = performance.now();
+let fps = 0;
+let fpsCount = 0;
 
 const startScreen = {
   image: new Image(),
@@ -110,14 +113,32 @@ function draw() {
   if (settings.isMobile) joystick.draw(context);
   
   let startText = "Your device is " + (settings.isMobile ? "MOBILE. Check out the joystick! :p" : "NOT MOBILE. I recommend accessing from a mobile device!");
-  context.font = "20px arial";
   context.textBaseline = "top";
   context.textAlign = "left";
-  context.fillStyle = "black";
-  context.fillText(startText, 10, 10, context.canvas.width - 20);
+  context.strokeStyle = "black";
+  context.fillStyle = "white";
+  context.lineWidth = 3;
+  context.font = "20px arial";
+  context.strokeText(startText, 10, 20, context.canvas.width - 20);
+  context.fillText(startText, 10, 20, context.canvas.width - 20);
+  
+  context.textBaseline = "top";
+  context.textAlign = "right";
+  context.strokeStyle = "black";
+  context.fillStyle = "white";
+  context.lineWidth = 5;
+  context.font = "16px monospace";
+  context.strokeText(fps, context.canvas.width - 5, 5);
+  context.fillText(fps, context.canvas.width - 5, 5);
 }
 
-function loop() {
+function loop(time) {
+  fpsCount++;
+  if (time - startTime >= 1000) {
+    startTime = time;
+    fps = fpsCount;
+    fpsCount = 0;
+  }
   update();
   draw();
   requestAnimationFrame(loop);
@@ -127,6 +148,6 @@ function loop() {
 
 
 load();
-loop();
+loop(performance.now());
 
 //export default canvas;
